@@ -28,8 +28,8 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         clean: {
-            all: ['modules'],
-            jsx: ['modules']
+            all: ['build'],
+            jsx: ['build']
         },
 
         react: {
@@ -44,18 +44,19 @@ module.exports = function(grunt) {
         			'modules/*.jsx'
         			]
         		}
-        	},
-        	dynamic_mappings: {
-        		files: [
-        		{
-        			expand: true,
-        			cwd: 'modules/',
-        			src: ['**/*.jsx'],
-        			dest: 'build/',
-        			ext: '.js'
-        		}
-        		]
         	}
+         //    ,
+        	// dynamic_mappings: {
+        	// 	files: [
+        	// 	{
+        	// 		expand: true,
+        	// 		cwd: 'modules/',
+        	// 		src: ['**/*.jsx'],
+        	// 		dest: 'build/',
+        	// 		ext: '.js'
+        	// 	}
+        	// 	]
+        	// }
         },
         babel: {
         	options: {
@@ -81,12 +82,15 @@ module.exports = function(grunt) {
         watch: {
           files: ['**/*.jsx'],
           tasks: ['clean', 'build'],
-          options : { nospawn : true }
-      }
-  });
+          options : {
+            debounceDelay: 250,
+        }
 
-grunt.registerTask('build', ['react']);
-grunt.registerTask('watch', ['watch:jsx']);
+    }
+});
+
+grunt.registerTask('build', ['clean','react']);
+grunt.registerTask('w', ['watch']);
 grunt.registerTask('bb', ['babel']);
 grunt.registerTask('default', ['build']);
 
