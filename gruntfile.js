@@ -1,5 +1,6 @@
 'use strict';
 
+
 module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-browserify');
@@ -7,13 +8,25 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-symlink');
+    grunt.loadNpmTasks('grunt-babel');
+    grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-sass');
+    grunt.loadNpmTasks('grunt-recess');
+    grunt.loadNpmTasks('grunt-sizediff');
+    grunt.loadNpmTasks('grunt-svgmin');
+    grunt.loadNpmTasks('grunt-styl');
+    grunt.loadNpmTasks('grunt-php');
+    grunt.loadNpmTasks('grunt-eslint');
+    grunt.loadNpmTasks('grunt-concurrent');
+    grunt.loadNpmTasks('grunt-bower-requirejs');
 
+    require('load-grunt-tasks')(grunt);
 
     var viewsSrc = [
-    	'/modules/**/*.jsx'
+    '/modules/**/*.jsx'
     ];
 
-	grunt.initConfig({
+    grunt.initConfig({
         clean: {
             all: ['modules'],
             jsx: ['modules']
@@ -46,11 +59,11 @@ module.exports = function(grunt) {
         },
         babel: {
         	options: {
-        		sourceMap: true
+        		sourceMap: false
         	},
         	dist: {
         		files: {
-        			'dist/app.js': 'src/app.js'
+        			'dist/combined.js': 'out/combined.js'
         		}
         	}
         }
@@ -66,18 +79,15 @@ module.exports = function(grunt) {
         // }
         ,
         watch: {
-        	jsx: {
-        		files: ['**/*.jsx'],
-        		tasks: ['clean', 'build'],
-        		options: {
-        			debounceDelay: 250
-        		}
-        	}
-        }
-    });
+          files: ['**/*.jsx'],
+          tasks: ['clean', 'build'],
+          options : { nospawn : true }
+      }
+  });
 
 grunt.registerTask('build', ['react']);
 grunt.registerTask('watch', ['watch:jsx']);
+grunt.registerTask('bb', ['babel']);
 grunt.registerTask('default', ['build']);
 
 };
